@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">OpenMRS</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_sign_in">SignInActivity</string>
+    <string name="title_activity_register">RegisterActivity</string>
+    <string name="title_activity_add_patient">AddPatientActivity</string>
+    <string name="spinner_prompt">Pick a gender</string>
+    <string-array name="gender_array">
+    <item>Male</item>
+    <item>Female</item>
+    </string-array>
+</resources>

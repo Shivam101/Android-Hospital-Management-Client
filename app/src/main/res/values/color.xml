@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="primary">#4CAF50</color>
+    <color name="primaryDark">#388E3C</color>
+    <color name="accentColor">#FF5252</color>
+    <color name="accentColorPressed">#e96767</color>
+    <color name="white">#fafafa</color>
+    <color name="yellow_high">#FFEB3B</color>
+    <color name="white_pressed">#f1f1f1</color>
+    <color name="pink">#e91e63</color>
+    <color name="pink_pressed">#ec407a</color>
+    <color name="half_black">#808080</color>
+    <color name="black_semi_transparent">#B2000000</color>
+    <color name="refresh_blue">@color/nliveo_blue_colorPrimary</color>
+    <color name="refresh_red">@color/nliveo_red_colorPrimary</color>
+    <color name="refresh_green">@color/nliveo_green_colorPrimary</color>
+    <color name="refresh_yellow">#FFC107</color>
+    <color name="fb_blue">#3B5998</color>
+
+
+
+</resources>
