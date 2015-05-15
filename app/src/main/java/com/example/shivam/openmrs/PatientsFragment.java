@@ -1,22 +1,31 @@
 package com.example.shivam.openmrs;
 
+import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseQueryAdapter;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.List;
 
@@ -29,14 +38,17 @@ public class PatientsFragment extends Fragment {
     ListView patientList;
     SwipeRefreshLayout mRefresh;
     List<ParseObject> patients;
+    private ParseQueryAdapter<Patient> patientsAdapter;
     PatientAdapter mAdapter;
-    @Nullable
+
+
+    LayoutInflater inflater = null;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_patients, null);
         addPatient = (FloatingActionButton)root.findViewById(R.id.fab1);
         mRefresh = (SwipeRefreshLayout)root.findViewById(R.id.listRefresh);
-        mRefresh.setColorSchemeResources(R.color.refresh_blue,R.color.refresh_red,R.color.refresh_green,R.color.refresh_yellow);
+        mRefresh.setColorSchemeResources(R.color.refresh_blue, R.color.refresh_red, R.color.refresh_green, R.color.refresh_yellow);
         addPatient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -45,22 +57,45 @@ public class PatientsFragment extends Fragment {
             }
         });
         patientList = (ListView)root.findViewById(R.id.patientList);
-        mRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+
+        ParseQueryAdapter.QueryFactory<Patient> factory = new ParseQueryAdapter.QueryFactory<Patient>() {
+            public ParseQuery<Patient> create() {
+                ParseQuery<Patient> query = Patient.getQuery();
+                query.orderByDescending("createdAt");
+                query.fromLocalDatastore();
+                return query;
+            }
+        };
+
+        patientsAdapter = new PatientsAdapter(getActivity(), factory);
+        patientList.setAdapter(patientsAdapter);
+        //patientList.setAdapter(mAdapter);
+
+        /*mRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 refreshList();
             }
-        });
-        refreshList();
+        });*/
+        //refreshList();
+        syncToParse();
 
         return root;
 
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+
+    @Override
     public void onResume() {
         super.onResume();
-        refreshList();
+        syncToParse();
+        //refreshList();
     }
 
     public void refreshList()
@@ -96,11 +131,104 @@ public class PatientsFragment extends Fragment {
         return mFragment;
     }
 
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public void onCreateOptionsMenu(Menu menu,MenuInflater inflater) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getActivity().getMenuInflater().inflate(R.menu.menu_patients, menu);
-        return true;
+        super.onCreateOptionsMenu(menu,inflater);
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id==R.id.action_settings)
+        {
+            ParseUser.logOut();
+            Intent i = new Intent(getActivity(), SignInActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(i);
+        }
+        else if(id==R.id.action_sync)
+        {
+
+            syncToParse();
+        }
+        return super.onOptionsItemSelected(item);
+
+    }
+
+    public void syncToParse() {
+        ParseQuery<Patient> query = Patient.getQuery();
+        query.fromPin("PatientGroup");
+        query.whereEqualTo("isDraft", true);
+        query.findInBackground(new FindCallback<Patient>() {
+            @Override
+            public void done(List<Patient> list, ParseException e) {
+                if(e==null)
+                {
+                    for (final Patient p : list) {
+                        // Set is draft flag to false before
+                        // syncing to Parse
+                        p.setDraft(false);
+                        Dialog progressDialog;
+                        //getActivity().progressDialog = ProgressDialog.show(getActivity(), "", "Saving Patient Details...", true);
+                        p.saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                if(e==null)
+                                {
+                                    patientsAdapter.notifyDataSetChanged();
+                                }
+                                else
+                                {
+                                    p.setDraft(true);
+                                }
+                            }
+                        });
+
+                    }
+
+                    }
+            }
+        });
+    }
+
+    private class PatientsAdapter extends ParseQueryAdapter<Patient> {
+
+        public PatientsAdapter(Context context,
+                               ParseQueryAdapter.QueryFactory<Patient> queryFactory) {
+            super(context, queryFactory);
+        }
+
+        @Override
+        public View getItemView(Patient p, View view, ViewGroup parent) {
+            ViewHolder holder;
+            if (view == null) {
+                inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                view = inflater.inflate(R.layout.patient_list_item, parent, false);
+                holder = new ViewHolder();
+                holder.patientName = (TextView) view.findViewById(R.id.patientName);
+                holder.patientDetails = (TextView)view.findViewById(R.id.patientDetails);
+                view.setTag(holder);
+            } else {
+                holder = (ViewHolder) view.getTag();
+            }
+            TextView listTitle = holder.patientName;
+            TextView listContent = holder.patientDetails;
+            listTitle.setText(p.getName());
+            listContent.setText(p.getDetails());
+            if (p.isDraft()) {
+                listTitle.setTypeface(null, Typeface.ITALIC);
+            } else {
+                listTitle.setTypeface(null, Typeface.NORMAL);
+            }
+            return view;
+        }
+    }
+
+    private static class ViewHolder {
+        TextView patientName,patientDetails;
+    }
+
 
 
 }

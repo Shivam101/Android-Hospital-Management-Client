@@ -10,9 +10,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import br.liveo.interfaces.NavigationLiveoListener;
 import br.liveo.navigationliveo.NavigationLiveo;
@@ -90,6 +94,7 @@ public class MainActivity extends NavigationLiveo implements NavigationLiveoList
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(i);
         }
+
         return super.onOptionsItemSelected(item);
     }
 

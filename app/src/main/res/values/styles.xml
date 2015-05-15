@@ -5,6 +5,7 @@
     <style name="AppTheme.Base" parent="Theme.AppCompat.Light">
         <item name="colorPrimary">@color/nliveo_red_colorPrimary</item>
         <item name="colorPrimaryDark">@color/nliveo_red_colorPrimaryDark</item>
+        <item name="colorAccent">@color/accentColor</item>
         <item name="android:windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
     </style>

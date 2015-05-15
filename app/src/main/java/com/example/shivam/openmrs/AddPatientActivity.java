@@ -38,7 +38,7 @@ public class AddPatientActivity extends ActionBarActivity {
         mPhone = (EditText)findViewById(R.id.phoneET);
         mSavePatient = (Button)findViewById(R.id.savePatient);
         mGender = (Spinner)findViewById(R.id.genderSpinner);
-        mSavePatient.setOnClickListener(new View.OnClickListener() {
+        /*mSavePatient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ParseObject patientObject = new ParseObject("Patient");
@@ -90,6 +90,48 @@ public class AddPatientActivity extends ActionBarActivity {
                     }
                 });
             }}
+        });*/
+        mSavePatient.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Patient patient = new Patient();
+                patient.setUuidString();
+                patient.setDraft(true);
+                String name = mName.getText().toString();
+                name = name.trim();
+                String age = mAge.getText().toString();
+                age = age.trim();
+                String height = mHeight.getText().toString();
+                height = height.trim();
+                String phone = mPhone.getText().toString();
+                phone = phone.trim();
+                String gender = String.valueOf(mGender.getSelectedItem());
+                patient.setName(name);
+                patient.setAge(age);
+                patient.setGender(gender);
+                patient.setHeight(height);
+                patient.setPhone(phone);
+                patient.pinInBackground("PatientGroup", new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if(e==null) {
+                            Toast.makeText(AddPatientActivity.this, "Saved Patient Details !", Toast.LENGTH_SHORT).show();
+                            Intent i = new Intent(AddPatientActivity.this, MainActivity.class);
+                            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(i);
+                        }
+                        else
+                        {
+                            MaterialDialog.Builder builder = new MaterialDialog.Builder(AddPatientActivity.this);
+                            builder.content("Couldn't save patient details :( Try again later.");
+                            builder.title("Oops !");
+                            builder.positiveText(android.R.string.ok);
+                            builder.show();
+                        }
+                    }
+                });
+            }
         });
     }
 
