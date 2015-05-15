@@ -71,12 +71,13 @@ public class PatientsFragment extends Fragment {
         patientList.setAdapter(patientsAdapter);
         //patientList.setAdapter(mAdapter);
 
-        /*mRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        mRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                patientList.setAdapter(mAdapter);
                 refreshList();
             }
-        });*/
+        });
         //refreshList();
         syncToParse();
 
