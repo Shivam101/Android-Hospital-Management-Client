@@ -30,6 +30,11 @@
         <item name="colorPrimary">@color/nliveo_red_colorPrimary</item>
         <item name="colorPrimaryDark">@color/nliveo_red_colorPrimaryDark</item>
         <item name="colorAccent">@color/accentColor</item>
+        <item name="android:fastScrollThumbDrawable">@drawable/fastscroll_thumb</item>
+        <item name="android:fastScrollOverlayPosition">atThumb</item>
+        <item name="android:fastScrollTextColor">@color/accentColorPressed</item>
+        <item name="android:fastScrollTrackDrawable">@drawable/fastscroll_thumb_pressed_holo</item>
+        <item name="android:fastScrollPreviewBackgroundRight">@drawable/bg_default_focused_holo_light</item>
         <item name="android:windowTranslucentStatus">true</item>
     </style>
 

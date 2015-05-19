@@ -11,4 +11,5 @@
     <item>Male</item>
     <item>Female</item>
     </string-array>
+    <string name="title_activity_photo_confirmation">PhotoConfirmationActivity</string>
 </resources>

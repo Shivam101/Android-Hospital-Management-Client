@@ -2,6 +2,7 @@ package com.example.shivam.openmrs;
 
 import com.parse.Parse;
 import com.parse.ParseClassName;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
@@ -18,8 +19,7 @@ public class Patient extends ParseObject {
         return getString("patientName");
     }
 
-    public String getDetails()
-    {
+    public String getDetails() {
         return getString("patientAge")+" "+getString("patientGender")+" Height:"+getString("patientHeight")+getString("patientPhone");
     }
 
@@ -54,6 +54,8 @@ public class Patient extends ParseObject {
     {
         put("isDraft", isDraft);
     }
+
+    public void setImage(ParseFile image) { put("patientImage",image); }
 
     public void setUuidString() {
         UUID uuid = UUID.randomUUID();

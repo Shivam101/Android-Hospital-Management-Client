@@ -66,9 +66,11 @@ public class PatientsFragment extends Fragment {
                 return query;
             }
         };
+        refreshList();
 
-        patientsAdapter = new PatientsAdapter(getActivity(), factory);
-        patientList.setAdapter(patientsAdapter);
+        //patientsAdapter = new PatientsAdapter(getActivity(), factory);
+        patientList.setFastScrollEnabled(true);
+        //patientList.setAdapter(patientsAdapter);
         //patientList.setAdapter(mAdapter);
 
         mRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -78,8 +80,7 @@ public class PatientsFragment extends Fragment {
                 refreshList();
             }
         });
-        //refreshList();
-        syncToParse();
+        //syncToParse();
 
         return root;
 
@@ -95,14 +96,14 @@ public class PatientsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        syncToParse();
-        //refreshList();
+        //syncToParse();
+        refreshList();
     }
 
     public void refreshList()
     {
         ParseQuery<ParseObject> noteQuery = new ParseQuery<ParseObject>("Patient");
-        noteQuery.addDescendingOrder("createdAt");
+        noteQuery.addAscendingOrder("patientName");
         noteQuery.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> parseObjects, ParseException e) {
@@ -218,7 +219,8 @@ public class PatientsFragment extends Fragment {
             listTitle.setText(p.getName());
             listContent.setText(p.getDetails());
             if (p.isDraft()) {
-                listTitle.setTypeface(null, Typeface.ITALIC);
+                //listTitle.setTypeface(null, Typeface.ITALIC);
+                listTitle.setTextColor(getResources().getColor(R.color.accentColor));
             } else {
                 listTitle.setTypeface(null, Typeface.NORMAL);
             }
