@@ -55,9 +55,9 @@ public class PhotoConfirmationActivity extends ActionBarActivity {
                 patientPhone = getIntent().getStringExtra("phone");
                 patientName = patientName.trim();
                 patient.setName(patientName);
-                patient.setAge(patientAge);
+                patient.setAge(Integer.parseInt(patientAge));
                 patient.setGender(patientGender);
-                patient.setHeight(patientHeight);
+                patient.setHeight(Double.parseDouble(patientHeight));
                 patient.setPhone(patientPhone);
                 byte[] fileData = FileHelper.getByteArrayFromFile(PhotoConfirmationActivity.this, imageUri);
                 fileData = FileHelper.reduceImageForUpload(fileData);
@@ -75,7 +75,7 @@ public class PhotoConfirmationActivity extends ActionBarActivity {
                         {
                             PhotoConfirmationActivity.this.progressDialog = ProgressDialog.show(PhotoConfirmationActivity.this, "", "Saving Patient Details...", true);
 
-                            patient.pinInBackground("PatientGroup", new SaveCallback() {
+                            patient.saveInBackground(new SaveCallback() {
                                 @Override
                                 public void done(ParseException e) {
                                     if (e == null) {

@@ -98,11 +98,11 @@ public class PatientAdapter extends BaseAdapter implements SectionIndexer {
         ColorGenerator generator = ColorGenerator.MATERIAL; // or use DEFAULT
         int color1 = generator.getRandomColor();
         holder.titleLabel.setText(WordUtils.capitalize(patient.getString("patientName")));
-        holder.contentLabel.setText(patient.getString("patientAge") + " " + patient.getString("patientGender") + " Height:"+patient.getString("patientHeight"));
+        holder.contentLabel.setText(String.valueOf(patient.getInt("patientAge")) + " " + patient.getString("patientGender") + " Height:"+String.valueOf(patient.getDouble("patientHeight")));
         TextDrawable.IBuilder builder = TextDrawable.builder()
                 .beginConfig().width(100).height(100)
                 .endConfig()
-                .rect();
+                .round();
         TextDrawable td = builder.build(WordUtils.capitalize(patient.getString("patientName")).substring(0,1),color1);
         //TextDrawable td = TextDrawable.builder().beginConfig().width(50).height(50).endConfig().buildRect(patient.getString("patientName").substring(0,1),R.color.accentColor);
         holder.userImage.setImageDrawable(td);

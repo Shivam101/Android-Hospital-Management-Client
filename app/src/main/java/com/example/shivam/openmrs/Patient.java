@@ -20,7 +20,7 @@ public class Patient extends ParseObject {
     }
 
     public String getDetails() {
-        return getString("patientAge")+" "+getString("patientGender")+" Height:"+getString("patientHeight")+getString("patientPhone");
+        return String.valueOf(getInt("patientAge"))+" "+getString("patientGender")+" Height:"+String.valueOf(getDouble("patientHeight"))+getString("patientPhone");
     }
 
     public void setName(String name)
@@ -28,7 +28,7 @@ public class Patient extends ParseObject {
         put("patientName",name);
     }
 
-    public void setAge(String age)
+    public void setAge(Integer age)
     {
         put("patientAge",age);
     }
@@ -38,7 +38,7 @@ public class Patient extends ParseObject {
         put("patientGender",gender);
     }
 
-    public void setHeight(String height)
+    public void setHeight(Double height)
     {
         put("patientHeight",height);
     }

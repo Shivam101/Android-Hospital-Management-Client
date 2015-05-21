@@ -2,6 +2,7 @@ package com.example.shivam.openmrs;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -16,8 +17,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -26,6 +29,8 @@ import com.parse.ParseQuery;
 import com.parse.ParseQueryAdapter;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+
+import org.apache.commons.lang3.text.WordUtils;
 
 import java.util.List;
 
@@ -40,7 +45,8 @@ public class PatientsFragment extends Fragment {
     List<ParseObject> patients;
     private ParseQueryAdapter<Patient> patientsAdapter;
     PatientAdapter mAdapter;
-
+    SearchView mSearchView;
+    ProgressDialog dialog;
 
     LayoutInflater inflater = null;
     @Override
@@ -136,6 +142,54 @@ public class PatientsFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu,MenuInflater inflater) {
         // Inflate the menu; this adds items to the action bar if it is present.
         super.onCreateOptionsMenu(menu,inflater);
+        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+        mSearchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+        mSearchView.setSubmitButtonEnabled(true);
+        mSearchView.setQueryHint("Search for patients");
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                mSearchView.setQuery("", false);
+                mSearchView.clearFocus();
+                mSearchView.setIconified(true);
+                s = s.trim();
+
+                ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Patient");
+                query.whereContains("patientName", WordUtils.capitalize(s));
+                dialog = ProgressDialog.show(getActivity(), "Looking for Patients...", "Please wait...", true);
+                query.findInBackground(new FindCallback<ParseObject>() {
+
+                    @Override
+                    public void done(List<ParseObject> list, ParseException e) {
+                        if(e==null)
+                        {
+
+                            dialog.dismiss();
+                            mAdapter = new PatientAdapter(getActivity(), R.layout.patient_list_item, list);
+                                patientList.setAdapter(mAdapter);
+                                mAdapter.notifyDataSetChanged();
+                            //show new list
+                        }
+                        else
+                        {
+                            dialog.dismiss();
+                            MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
+                            builder.content("Couldn't find any patients :( Try again later.");
+                            builder.title("Oops !");
+                            builder.positiveText(android.R.string.ok);
+                            builder.show();
+                        }
+                    }
+                });
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
     }
 
     @Override
@@ -151,8 +205,61 @@ public class PatientsFragment extends Fragment {
         }
         else if(id==R.id.action_sync)
         {
-
             syncToParse();
+        }
+        else if(id==R.id.action_sort_age)
+        {
+            ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Patient");
+            query.addAscendingOrder("patientAge");
+            dialog = ProgressDialog.show(getActivity(), "Sorting Patients...", "Please wait...", true);
+            query.findInBackground(new FindCallback<ParseObject>() {
+
+                @Override
+                public void done(List<ParseObject> list, ParseException e) {
+                    if (e == null) {
+
+                        dialog.dismiss();
+                        mAdapter = new PatientAdapter(getActivity(), R.layout.patient_list_item, list);
+                        patientList.setAdapter(mAdapter);
+                        mAdapter.notifyDataSetChanged();
+                        //show new list
+                    } else {
+                        dialog.dismiss();
+                        MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
+                        builder.content("Couldn't find any patients :( Try again later.");
+                        builder.title("Oops !");
+                        builder.positiveText(android.R.string.ok);
+                        builder.show();
+                    }
+                }
+            });
+        }
+        else if(id==R.id.action_sort_height)
+        {
+            ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Patient");
+            query.addAscendingOrder("patientHeight");
+            dialog = ProgressDialog.show(getActivity(), "Sorting Patients...", "Please wait...", true);
+            query.findInBackground(new FindCallback<ParseObject>() {
+
+                @Override
+                public void done(List<ParseObject> list, ParseException e) {
+                    if (e == null) {
+
+                        dialog.dismiss();
+                        mAdapter = new PatientAdapter(getActivity(), R.layout.patient_list_item, list);
+                        patientList.setAdapter(mAdapter);
+                        mAdapter.notifyDataSetChanged();
+                        //show new list
+                    } else {
+                        dialog.dismiss();
+                        MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
+                        builder.content("Couldn't find any patients :( Try again later.");
+                        builder.title("Oops !");
+                        builder.positiveText(android.R.string.ok);
+                        builder.show();
+                    }
+                }
+            });
         }
         return super.onOptionsItemSelected(item);
 
