@@ -6,6 +6,7 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -56,6 +57,8 @@ public class Patient extends ParseObject {
     }
 
     public void setImage(ParseFile image) { put("patientImage",image); }
+
+    public void setDate(Date date) { put("patientDate",date); }
 
     public void setUuidString() {
         UUID uuid = UUID.randomUUID();

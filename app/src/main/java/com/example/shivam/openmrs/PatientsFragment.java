@@ -261,6 +261,33 @@ public class PatientsFragment extends Fragment {
                 }
             });
         }
+        else if(id==R.id.action_sort_date)
+        {
+            ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Patient");
+            query.addDescendingOrder("patientDate");
+            dialog = ProgressDialog.show(getActivity(), "Sorting Patients...", "Please wait...", true);
+            query.findInBackground(new FindCallback<ParseObject>() {
+
+                @Override
+                public void done(List<ParseObject> list, ParseException e) {
+                    if (e == null) {
+
+                        dialog.dismiss();
+                        mAdapter = new PatientAdapter(getActivity(), R.layout.patient_list_item, list);
+                        patientList.setAdapter(mAdapter);
+                        mAdapter.notifyDataSetChanged();
+                        //show new list
+                    } else {
+                        dialog.dismiss();
+                        MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
+                        builder.content("Couldn't find any patients :( Try again later.");
+                        builder.title("Oops !");
+                        builder.positiveText(android.R.string.ok);
+                        builder.show();
+                    }
+                }
+            });
+        }
         return super.onOptionsItemSelected(item);
 
     }

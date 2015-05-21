@@ -24,6 +24,7 @@ import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Calendar;
 
 
 public class PhotoConfirmationActivity extends ActionBarActivity {
@@ -59,6 +60,9 @@ public class PhotoConfirmationActivity extends ActionBarActivity {
                 patient.setGender(patientGender);
                 patient.setHeight(Double.parseDouble(patientHeight));
                 patient.setPhone(patientPhone);
+                Calendar date = Calendar.getInstance();
+                //date.set(date.DAY_OF_MONTH,date.MONTH,date.YEAR);
+                patient.setDate(date.getTime());
                 byte[] fileData = FileHelper.getByteArrayFromFile(PhotoConfirmationActivity.this, imageUri);
                 fileData = FileHelper.reduceImageForUpload(fileData);
                 String fileName = FileHelper.getFileName(PhotoConfirmationActivity.this, imageUri);

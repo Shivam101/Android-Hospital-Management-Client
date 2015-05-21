@@ -2,6 +2,7 @@ package com.example.shivam.openmrs;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,14 +13,19 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.example.shivam.openmrs.R;
+import com.parse.GetDataCallback;
 import com.parse.Parse;
+import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.squareup.picasso.Picasso;
 
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -40,6 +46,7 @@ public class PatientAdapter extends BaseAdapter implements SectionIndexer {
     static int layoutResourceId;
     HashMap<String, Integer> mapIndex;
     String[] sections;
+    SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
 
     public PatientAdapter(Context context,int layoutResourceId, List<ParseObject> mPatients) {
         this.mContext = context;
@@ -83,7 +90,7 @@ public class PatientAdapter extends BaseAdapter implements SectionIndexer {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
+        final ViewHolder holder;
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.patient_list_item, null);
             holder = new ViewHolder();
@@ -98,14 +105,28 @@ public class PatientAdapter extends BaseAdapter implements SectionIndexer {
         ColorGenerator generator = ColorGenerator.MATERIAL; // or use DEFAULT
         int color1 = generator.getRandomColor();
         holder.titleLabel.setText(WordUtils.capitalize(patient.getString("patientName")));
-        holder.contentLabel.setText(String.valueOf(patient.getInt("patientAge")) + " " + patient.getString("patientGender") + " Height:"+String.valueOf(patient.getDouble("patientHeight")));
+        holder.contentLabel.setText(String.valueOf(patient.getInt("patientAge")) + " " + patient.getString("patientGender") + " Height: "+String.valueOf(patient.getDouble("patientHeight"))+" Date: "+df.format(patient.get("patientDate")));
         TextDrawable.IBuilder builder = TextDrawable.builder()
                 .beginConfig().width(100).height(100)
                 .endConfig()
                 .round();
-        TextDrawable td = builder.build(WordUtils.capitalize(patient.getString("patientName")).substring(0,1),color1);
+        TextDrawable td = builder.build(WordUtils.capitalize(patient.getString("patientName")).substring(0, 1), color1);
         //TextDrawable td = TextDrawable.builder().beginConfig().width(50).height(50).endConfig().buildRect(patient.getString("patientName").substring(0,1),R.color.accentColor);
-        holder.userImage.setImageDrawable(td);
+        //holder.userImage.setImageDrawable(td);
+
+            //Log.e("IMAGE",String.valueOf(Uri.parse(patient.getParseFile("patientImage").getData().toString())));
+            //System.out.println(Uri.parse(patient.getParseFile("patientImage").getData().toString()));
+            Picasso.with(this.mContext).load(Uri.parse(patient.getParseFile("patientImage").getDataInBackground().toString())).resize(100,100).into(holder.userImage);
+            /*patient.getParseFile("patientImage").getDataInBackground(new GetDataCallback() {
+                @Override
+                public void done(byte[] bytes, ParseException e) {
+                    if (e == null) {
+                        Picasso.with(mContext).load(Uri.parse(bytes.toString())).into(holder.userImage);
+                    } else {
+                        //Toast.makeText(MainActivity.class)
+                    }
+                }
+            });*/
         return convertView;
     }
 
