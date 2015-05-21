@@ -21,6 +21,7 @@ import com.example.shivam.openmrs.R;
 import com.parse.GetDataCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.squareup.picasso.Picasso;
 
@@ -116,7 +117,9 @@ public class PatientAdapter extends BaseAdapter implements SectionIndexer {
 
             //Log.e("IMAGE",String.valueOf(Uri.parse(patient.getParseFile("patientImage").getData().toString())));
             //System.out.println(Uri.parse(patient.getParseFile("patientImage").getData().toString()));
-            Picasso.with(this.mContext).load(Uri.parse(patient.getParseFile("patientImage").getDataInBackground().toString())).resize(100,100).into(holder.userImage);
+            ParseFile file = patient.getParseFile("patientImage");
+            Uri imageUri = Uri.parse(file.getUrl());
+            Picasso.with(this.mContext).load(imageUri).resize(100,100).placeholder(R.drawable.ic_person_grey_500_48dp).into(holder.userImage);
             /*patient.getParseFile("patientImage").getDataInBackground(new GetDataCallback() {
                 @Override
                 public void done(byte[] bytes, ParseException e) {
