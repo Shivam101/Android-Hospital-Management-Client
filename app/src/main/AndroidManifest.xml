@@ -7,7 +7,6 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-
     <application
         android:name=".OpenMRSApplication"
         android:allowBackup="true"
@@ -45,7 +44,13 @@
         <activity
             android:name=".PhotoConfirmationActivity"
             android:label="@string/title_activity_photo_confirmation"
+            android:theme="@style/AppTheme2" >
+        </activity>
+        <activity
+            android:name=".PatientDetailsActivity"
+            android:label="@string/title_activity_patient_details"
             android:theme="@style/AppTheme2"
+            android:parentActivityName=".MainActivity"
             >
         </activity>
     </application>

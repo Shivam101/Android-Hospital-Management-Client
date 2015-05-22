@@ -16,9 +16,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.getbase.floatingactionbutton.FloatingActionButton;
@@ -51,7 +54,7 @@ public class PatientsFragment extends Fragment {
     LayoutInflater inflater = null;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_patients, null);
+        final ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_patients, null);
         addPatient = (FloatingActionButton)root.findViewById(R.id.fab1);
         mRefresh = (SwipeRefreshLayout)root.findViewById(R.id.listRefresh);
         mRefresh.setColorSchemeResources(R.color.refresh_blue, R.color.refresh_red, R.color.refresh_green, R.color.refresh_yellow);
@@ -87,6 +90,21 @@ public class PatientsFragment extends Fragment {
             }
         });
         //syncToParse();
+        patientList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                RelativeLayout linearLayoutParent = (RelativeLayout) container;
+//                RelativeLayout linearLayoutChild = (RelativeLayout ) linearLayoutParent.getChildAt(1);
+//                TextView tvCountry = (TextView) linearLayoutChild.getChildAt(0);
+                TextView tv = (TextView)patientList.getChildAt(position).findViewById(R.id.patientName);
+                String name = tv.getText().toString();
+                //Toast.makeText(getActivity(),tv.getText().toString(),Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(getActivity(),PatientDetailsActivity.class);
+                i.putExtra("PATIENT_NAME",name);
+                startActivity(i);
+                //ParseQuery<>
+            }
+        });
 
         return root;
 

@@ -119,7 +119,7 @@ public class PatientAdapter extends BaseAdapter implements SectionIndexer {
             //System.out.println(Uri.parse(patient.getParseFile("patientImage").getData().toString()));
             ParseFile file = patient.getParseFile("patientImage");
             Uri imageUri = Uri.parse(file.getUrl());
-            Picasso.with(this.mContext).load(imageUri).resize(100,100).placeholder(R.drawable.ic_person_grey_500_48dp).into(holder.userImage);
+            Picasso.with(this.mContext).load(imageUri).fit().centerCrop().placeholder(R.drawable.ic_person_grey_500_48dp).into(holder.userImage);
             /*patient.getParseFile("patientImage").getDataInBackground(new GetDataCallback() {
                 @Override
                 public void done(byte[] bytes, ParseException e) {

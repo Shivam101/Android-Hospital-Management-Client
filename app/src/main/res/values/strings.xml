@@ -16,4 +16,5 @@
         <item>Sort by Height</item>
     </string-array>
     <string name="title_activity_photo_confirmation">PhotoConfirmationActivity</string>
+    <string name="title_activity_patient_details">PatientDetailsActivity</string>
 </resources>

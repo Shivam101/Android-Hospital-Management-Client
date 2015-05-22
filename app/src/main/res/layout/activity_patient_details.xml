@@ -1,0 +1,129 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    tools:context="com.example.shivam.openmrs.PatientDetailsActivity"
+    android:layout_height="match_parent">
+<RelativeLayout
+     android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:id="@+id/userImage"
+        >
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:id="@+id/userImage2"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name Comes Here"
+            android:id="@+id/patientName"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:padding="10dp"
+            android:textSize="20sp"
+            android:layout_marginBottom="10dp"
+            android:textStyle="italic"
+            android:textColor="@color/white"
+            />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/userImage"
+        android:orientation="vertical"
+        android:id="@+id/card1"
+        android:background="@drawable/bg_card"
+        >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:drawablePadding="20dp"
+        android:drawableStart="@drawable/ic_cake_grey_500_36dp"
+        android:id="@+id/userAge"
+        android:layout_marginTop="20dp"
+        android:text="Age"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:drawableStart="@drawable/ic_people_grey_500_36dp"
+        android:id="@+id/userGender"
+        android:drawablePadding="20dp"
+        android:text="Gender"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableStart="@drawable/ic_assessment_grey_500_36dp"
+        android:padding="10dp"
+        android:drawablePadding="20dp"
+        android:id="@+id/userHeight"
+        android:text="Height"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:id="@+id/userPhone"
+        android:drawablePadding="20dp"
+        android:drawableStart="@drawable/ic_phone_grey_500_36dp"
+        android:text="Phone"
+        android:textSize="15sp"
+        />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/card1"
+        android:background="@drawable/bg_card"
+        android:id="@+id/card2"
+        android:orientation="vertical"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/userParam1"
+            android:padding="10dp"
+            android:text="Heart Rate"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/userParam2"
+            android:padding="10dp"
+            android:text="Temperature"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/userParam3"
+            android:padding="10dp"
+            android:text="Pulse"
+            />
+    </LinearLayout>
+
+    <com.jjoe64.graphview.GraphView
+        android:id="@+id/graph"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_below="@+id/card2"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/bg_card"
+        />
+
+</RelativeLayout>
+</ScrollView>
