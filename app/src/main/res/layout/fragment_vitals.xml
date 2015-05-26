@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:visibility="gone"
         android:background="@drawable/bg_card"
-        android:layout_height="300dp"
+        android:layout_height="match_parent"
         android:layout_centerInParent="true"
         />
 
@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/textView"
         android:visibility="gone"
-        />w
+        />
     
 
     <com.getbase.floatingactionbutton.FloatingActionButton
