@@ -109,6 +109,7 @@
     <orderEntry type="library" exported="" name="Parse-1.9.2" level="project" />
     <orderEntry type="library" exported="" name="commons-lang3-3.4" level="project" />
     <orderEntry type="library" exported="" name="navigationdrawer-material-1.0.5" level="project" />
+    <orderEntry type="library" exported="" name="MPAndroidChart-v2.1.0" level="project" />
     <orderEntry type="library" exported="" name="bolts-android-1.2.0" level="project" />
     <orderEntry type="library" exported="" name="MaterialDesign-1.4" level="project" />
   </component>

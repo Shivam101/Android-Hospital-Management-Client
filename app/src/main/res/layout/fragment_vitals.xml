@@ -1,6 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-</LinearLayout>
+    <com.getbase.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        fab:fab_icon="@drawable/ic_play_arrow_white_36dp"
+        fab:fab_colorNormal="@color/nliveo_red_colorPrimary"
+        fab:fab_colorPressed="@color/nliveo_red_colorPrimaryDark"
+        fab:fab_size="normal"
+        android:id="@+id/startGraph"
+        />
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/lineChart"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:background="@drawable/bg_card"
+        android:layout_height="300dp"
+        android:layout_centerInParent="true"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView"
+        android:visibility="gone"
+        />w
+    
+
+    <com.getbase.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:visibility="gone"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/pauseButton"
+        fab:fab_icon="@drawable/ic_pause_white_24dp"
+        fab:fab_colorNormal="@color/nliveo_red_colorPrimary"
+        fab:fab_colorPressed="@color/nliveo_red_colorPrimaryDark"
+        fab:fab_size="mini"
+        android:layout_margin="16dp"
+        />
+
+    <com.getbase.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/recordButton"
+        android:visibility="gone"
+        fab:fab_icon="@drawable/ic_mic_white_24dp"
+        fab:fab_colorNormal="@color/nliveo_red_colorPrimary"
+        fab:fab_colorPressed="@color/nliveo_red_colorPrimaryDark"
+        android:layout_margin="16dp"
+        fab:fab_size="mini"
+        />
+</RelativeLayout>
